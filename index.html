@@ -1,85 +1,176 @@
-<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MIRTI V17 DPASTE</title>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mpegts.js@1.7.3/dist/mpegts.min.js"></script>
-<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#070b14;color:#fff;font-family:Arial;height:100vh;display:flex;overflow:hidden;outline:none}
-#left{width:300px;background:#0b1120;border-right:3px solid #ff0a16;display:flex;flex-direction:column}
-#mid{width:380px;background:#0e1424;border-right:2px solid #1e2d4a;display:flex;flex-direction:column}
-#playerArea{flex:1;background:#000;display:flex;flex-direction:column;position:relative}
-#logoTop{padding:12px;display:flex;align-items:center;gap:10px;border-bottom:2px solid #1e2d4a;background:#080e1e}
-#logoBox{width:42px;height:42px;background:linear-gradient(135deg,#ff0a16,#ff8c00);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:20px}
-#catTabs{display:flex;gap:4px;padding:8px;background:#0e1424;border-bottom:2px solid #1e2d4a}
-.catTab{flex:1;padding:12px 6px;background:#1a2340;border-radius:8px;text-align:center;cursor:pointer;font-size:11px;font-weight:bold;border:2px solid transparent;outline:none}
-.catTab.active{background:#ff0a16;border-color:#fff}
-.catTab:focus{border-color:#0f0;transform:scale(1.05)}
-#groupList{flex:1;overflow-y:auto;padding:6px}
-.group{padding:14px;background:#1a2340;margin:5px 0;border-radius:10px;cursor:pointer;font-size:12px;border:2px solid #1e2d4a;display:flex;justify-content:space-between;outline:none}
-.group.active{background:#ff0a16;border-color:#fff}
-.group:focus{border-color:#0f0}
-#channelList{flex:1;overflow-y:auto;padding:6px}
-.ch{padding:12px;background:#1a2340;margin:5px 0;border-radius:10px;cursor:pointer;border:2px solid #1e2d4a;display:flex;gap:12px;align-items:center;outline:none}
-.ch.active{background:#ff0a16;border-color:#fff}
-.ch:focus{border-color:#0f0;background:#2a3a60}
-.ch img{width:48px;height:48px;border-radius:8px;background:#000;object-fit:contain}
-#player{flex:1;width:100%;background:#000}
-#bar{padding:10px;background:#0b1120;display:flex;gap:10px;align-items:center;border-top:2px solid #1e2d4a;font-size:11px}
-#empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#070b14;z-index:10;padding:24px;text-align:center}
-#settings{position:absolute;top:0;right:0;bottom:0;width:460px;background:#0b1120;border-left:3px solid #ff0a16;z-index:20;transform:translateX(100%);transition:.3s;padding:16px;overflow-y:auto}
-#settings.open{transform:translateX(0)}
-.tabs{display:flex;gap:4px;margin-top:12px}
-.tab{flex:1;padding:12px;background:#1a2744;border-radius:8px;text-align:center;cursor:pointer;font-size:11px;font-weight:bold;border:2px solid transparent;outline:none}
-.tab.active{background:#ff0a16;border-color:#fff}
-.box{display:none;margin-top:12px;padding:14px;background:#151d32;border-radius:12px;border:1px solid #1e2d4a}
-.box.active{display:block}
-input,textarea{width:100%;padding:14px;border-radius:8px;border:2px solid #1e2d4a;background:#060a14;color:#fff;margin-top:8px;font-size:14px;outline:none}
-input:focus,textarea:focus{border-color:#ff0a16}
-.btn{width:100%;padding:14px;background:#ff0a16;color:#fff;border:none;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:10px;font-size:14px;outline:none;border:2px solid transparent}
-.btn:focus{border-color:#fff}
-.btnSec{background:#1a2744}
-.log{font-size:11px;background:#060a14;padding:12px;border-radius:8px;margin-top:10px;max-height:180px;overflow-y:auto;white-space:pre-wrap;border:1px solid #1e2d4a;color:#0f0}
-#tvHint{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);padding:8px 16px;border-radius:20px;font-size:11px;color:#8aa;border:1px solid #1e2d4a;z-index:5}
-@media(max-width:900px){body{flex-direction:column}#playerArea{order:1;height:45vh}#left{order:2;width:100%;height:25vh}#mid{order:3;width:100%;height:35vh}#settings{width:100%}}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mırtı TV </title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#070b14;color:#e8e6df;font-family:Arial,sans-serif;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{height:42px;background:#0f1726;display:flex;align-items:center;justify-content:space-between;padding:0 8px;border-bottom:1px solid #1e2a44;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:6px;font-weight:900;font-size:13px}
+.logo img{height:26px;width:26px;object-fit:cover;border-radius:5px}
+.top{background:#0d1525;display:flex;flex-wrap:nowrap;gap:4px;align-items:center;padding:5px 6px;border-bottom:1px solid #1c2b4a;flex-shrink:0;overflow:auto}
+.top button{border:1px solid #2a3a5a;color:#e8e6df;background:#1a2a4a;padding:6px 12px;border-radius:14px;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:4px;flex-shrink:0;opacity:1;transition:all 0.2s}
+.top button.on{opacity:1;color:#fff;box-shadow:0 0 8px rgba(0,0,0,.4)}
+.top button[data-tab="live"].on{background:#ff3b30;border-color:#ff3b30;box-shadow:0 0 10px rgba(255,59,48,.5)}
+.top button[data-tab="movie"].on{background:#007aff;border-color:#007aff;box-shadow:0 0 10px rgba(0,122,255,.5)}
+.top button[data-tab="series"].on{background:#af52de;border-color:#af52de;box-shadow:0 0 10px rgba(175,82,222,.5)}
+.top button[data-tab="radio"].on{background:#ff9500;border-color:#ff9500;color:#111;box-shadow:0 0 12px rgba(255,149,0,.6);font-weight:900}
+.top button[data-tab="fav"].on{background:#ffcc00;border-color:#ffcc00;color:#111;box-shadow:0 0 10px rgba(255,204,0,.5)}
+#playerCol{height:36vh;min-height:180px;max-height:36vh;background:#000;position:relative;display:flex;flex-direction:column;flex-shrink:0;transition:all 0.3s}
+#playerCol.fullscreen{height:100vh;min-height:100vh;max-height:100vh;position:fixed;inset:0;z-index:80;background:#000}
+#player{flex:1;position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:none}
+#video{width:100%;height:100%;object-fit:contain;background:#000;z-index:2}
+#audioEl{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px}
+#idle{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000}
+#idle img{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+@media (min-width:900px){
+  #playerCol{height:52vh;min-height:340px;max-height:52vh;max-width:1100px;margin:0 auto;width:100%;border-left:1px solid #1c2b4a;border-right:1px solid #1c2b4a}
+  #playerCol.fullscreen{max-width:none;margin:0;border:none;height:100vh;max-height:100vh}
+  #idle img{object-fit:contain;object-position:center;background:#000}
+  #playerCol.fullscreen #idle img{object-fit:contain}
+  body{background:#050a14}
+  #list{max-width:1100px;margin:0 auto;width:100%;border-left:1px solid #1c2b4a;border-right:1px solid #1c2b4a}
+  #groupsWrap{max-width:1100px;margin:0 auto;width:100%;border-left:1px solid #1c2b4a;border-right:1px solid #1c2b4a}
+  .top{max-width:1100px;margin:0 auto;width:100%;border-left:1px solid #1c2b4a;border-right:1px solid #1c2b4a}
+  header{max-width:1100px;margin:0 auto;width:100%;border-left:1px solid #1c2b4a;border-right:1px solid #1c2b4a}
+  #epgBar{max-width:1100px;margin:0 auto;width:100%;border-left:1px solid #1c2b4a;border-right:1px solid #1c2b4a}
+}
+#fsBtn{position:absolute;top:8px;right:8px;z-index:10;background:rgba(0,0,0,.6);color:#fff;border:1px solid rgba(255,255,255,.3);width:28px;height:28px;border-radius:6px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#fsExit{position:absolute;top:8px;right:8px;z-index:90;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.4);width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center}
+#playerCol.fullscreen #fsBtn{display:none}
+#playerCol.fullscreen #fsExit{display:flex}
+#fsHint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:65;background:rgba(0,0,0,.8);color:#fff;padding:10px 16px;border-radius:10px;font-size:11px;text-align:center;display:none;pointer-events:none}
+#playerCol.fullscreen #fsHint{display:block;animation:fadeOut 3s forwards 2s}
+@keyframes fadeOut{0%{opacity:1}100%{opacity:0;display:none}}
+#volOsd{position:absolute;left:16px;top:50%;transform:translateY(-50%);z-index:66;background:rgba(0,0,0,.75);color:#fff;padding:8px 6px;border-radius:20px;display:none;flex-direction:column;align-items:center;gap:6px;pointer-events:none}
+#volBar{width:6px;height:80px;background:rgba(255,255,255,.25);border-radius:3px;position:relative;overflow:hidden}
+#volFill{position:absolute;bottom:0;left:0;right:0;background:#ff9500;border-radius:3px;transition:height 0.2s}
+#loadWrap{position:absolute;bottom:8px;left:8%;right:8%;z-index:4;display:flex;flex-direction:column;align-items:center;gap:3px}
+#loadBar{width:100%;height:4px;background:rgba(255,255,255,.25);border-radius:3px;overflow:hidden}
+#loadFill{height:100%;width:0%;background:#d4b78f;transition:width .3s}
+#loadText{font-size:8px;color:#fff;background:rgba(0,0,0,.75);padding:2px 8px;border-radius:8px;text-align:center}
+#epgBar{height:24px;background:#101c33;padding:2px 8px;font-size:10px;font-weight:600;border-top:1px solid #1c2b4a;display:flex;align-items:center;flex-shrink:0}
+#epgNow{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#groupsWrap{height:48px;background:#0b1320;border-bottom:1px solid #1c2b4a;display:flex;align-items:center;padding:0 4px;gap:4px;flex-shrink:0}
+#groupsWrap button.arrow{background:#1e2f52;color:#fff;border:none;width:28px;height:28px;border-radius:50%;font-size:11px;cursor:pointer;flex-shrink:0}
+#groups{flex:1;display:flex;gap:6px;overflow:auto;scroll-behavior:smooth;padding:4px 0}
+.gChip{padding:8px 14px;background:#1a2a4a;border:1px solid #2a4a8a;border-radius:12px;font-size:13px;white-space:nowrap;cursor:pointer;flex-shrink:0;color:#fff;font-weight:600}
+.gChip.on{background:#d4b78f;color:#111;font-weight:800;border-color:#d4b78f}
+#list{flex:1;background:#080d16;display:flex;flex-direction:column;overflow:hidden;min-height:0;transition:all 0.3s}
+#playerCol.fullscreen ~ #groupsWrap, #playerCol.fullscreen ~ #list, #playerCol.fullscreen ~ .top, #playerCol.fullscreen ~ header{display:none!important;max-width:none!important}
+#fsChannelList{position:absolute;bottom:0;left:0;right:0;height:52%;background:rgba(8,13,22,.96);border-top:2px solid #ff3b30;z-index:75;display:none;flex-direction:column;overflow:hidden;box-shadow:0 -4px 20px rgba(0,0,0,.8)}
+#fsChannelList.show{display:flex}
+#fsChannelList .fsHead{height:36px;background:#0b1320;display:flex;align-items:center;justify-content:space-between;padding:0 10px;border-bottom:1px solid #1c2b4a;flex-shrink:0}
+#fsGrid{flex:1;overflow:auto;padding:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px;grid-auto-rows:72px}
+#grid{flex:1;overflow:auto;padding:5px}
+#grid.live{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;grid-auto-rows:68px}
+#grid.poster{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;grid-auto-rows:280px}
+#grid.radioGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;grid-auto-rows:110px}
+.item{position:relative;display:flex;align-items:center;gap:6px;background:#13203a;border:1px solid #1e2e51;border-radius:8px;padding:4px 6px;cursor:pointer;height:68px;overflow:hidden;flex-shrink:0}
+.item.ulusal{background:#1a2f5a;border-color:#2a4a8a}
+.item.on{border-color:#d4b78f;box-shadow:0 0 6px rgba(212,183,143,.25)}
+.logoBox{width:42px;height:42px;min-width:42px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;padding:1px}
+.logoBox img{width:100%;height:100%;object-fit:contain;background:#fff}
+.info{flex:1;overflow:hidden;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:1px;padding-right:14px}
+.info b{font-size:12px;line-height:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:800;color:#fff}
+.info .epg1{font-size:10px;line-height:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;color:#c8d8ff;max-height:22px}
+.info .epg2{font-size:9px;line-height:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:400;color:#7a8aaa;max-height:20px}
+.radioItem{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:linear-gradient(180deg,#1a2f5a 0%,#0f1f3a 100%);border:1px solid #2a4a8a;border-radius:14px;padding:10px 6px;cursor:pointer;height:110px;overflow:hidden;flex-shrink:0;text-align:center}
+.radioItem.on{border-color:#ff9500;box-shadow:0 0 10px rgba(255,149,0,.4);background:linear-gradient(180deg,#3a2a1a 0%,#2a1a0a 100%)}
+.radioItem .logoBox{width:56px;height:56px;min-width:56px;background:#fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.radioItem b{font-size:11px;line-height:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%;font-weight:800;color:#fff}
+.radioItem .rg{font-size:8px;color:#ffcc88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%}
+.favBtn{position:absolute;right:2px;bottom:2px;width:16px;height:16px;min-width:16px;border:none;background:rgba(0,0,0,.3);border-radius:50%;color:#666;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.favBtn.on{color:#ffcc33;background:rgba(255,204,51,.25)}
+.radioItem .favBtn{top:6px;right:6px;bottom:auto;width:18px;height:18px;background:rgba(0,0,0,.4);color:#aaa;font-size:10px}
+.posterCard{background:#121e33;border:1px solid #1e2e51;border-radius:8px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;height:280px;position:relative}
+.posterImg{height:210px;min-height:210px;background:#0d1525;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.posterImg img{width:100%;height:100%;object-fit:contain;display:block;background:#0d1525}
+.posterTitle{padding:5px 6px;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#121e33;font-weight:700;height:70px;display:flex;flex-direction:column;justify-content:center;gap:1px}
+.posterTitle small{font-size:8px;color:#7ec8ff;font-weight:500;white-space:normal;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;max-height:20px}
+.favBtnCard{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(0,0,0,.55);border-radius:50%;border:none;color:#888;font-size:9px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center}
+.favBtnCard.on{color:#ffcc33}
+.hidden{display:none!important}
+#radioInfo{position:absolute;bottom:30px;left:10px;right:10px;z-index:5;background:rgba(0,0,0,.7);padding:6px 10px;border-radius:8px;text-align:center;display:none}
+#radioInfo b{font-size:11px;color:#ffcc33;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#radioInfo span{font-size:9px;color:#aaa}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:99}
+.box{background:#101b30;border:1px solid #22365e;width:380px;max-width:94vw;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.box input{background:#0a1222;border:1px solid #22365e;color:#fff;padding:10px;border-radius:6px;width:100%;font-size:12px}
+.box textarea{background:#0a1222;border:1px solid #22365e;color:#fff;padding:10px;border-radius:6px;width:100%;font-size:11px;height:80px}
+#speedModal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;display:flex;align-items:center;justify-content:center}
+.speedBox{background:#fff;color:#111;width:360px;max-width:92vw;border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.speedVal{font-size:42px;font-weight:300;color:#111;margin-top:-10px}
 </style>
-</head><body tabindex="0"><div id="left"><div id="logoTop"><div id="logoBox">M</div><div><b>MIRTI</b><b style="color:#ff0a16"> TV</b><div style="font-size:9px;color:#0f0">V17 DPASTE + GOOGLE TV</div></div><button tabindex="0" onclick="toggleSet()" style="margin-left:auto;background:#ff0a16;border:none;color:#fff;padding:8px 14px;border-radius:8px">⚙️</button></div>
-<div id="catTabs">
-<button tabindex="0" class="catTab active" data-cat="TUMU" onclick="setCat('TUMU')">📺 TÜMÜ</button>
-<button tabindex="0" class="catTab" data-cat="CANLI" onclick="setCat('CANLI')">🔴 CANLI</button>
-<button tabindex="0" class="catTab" data-cat="FILM" onclick="setCat('FILM')">🎬 FİLM</button>
-<button tabindex="0" class="catTab" data-cat="DIZI" onclick="setCat('DIZI')">📺 DİZİ</button>
-</div>
-<div style="padding:6px 10px;background:#151d32;font-size:11px;color:#0f0;display:flex;justify-content:space-between"><span id="memInfo">Hafıza</span><span id="groupCount">0 grup</span></div>
-<div id="groupList"></div></div><div id="mid"><div style="padding:12px;background:#ff0a16;font-weight:bold;display:flex;justify-content:space-between"><span id="midTitle">KANALLAR</span><span id="midCount">0</span></div><input tabindex="0" id="search" placeholder="🔍 Ara..."><div id="channelList"></div></div><div id="playerArea"><div id="empty"><div style="width:90px;height:90px;background:linear-gradient(135deg,#ff0a16,#ff8c00);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:bold">M</div><h3 style="color:#0f0;margin-top:14px">V17 DPASTE ENTEGRE</h3><p style="font-size:11px;color:#8aa;margin-top:8px;line-height:1.7">dpaste.com/7FMSCCLYX.txt içine gömülü<br/>Otomatik yüklenecek - Film/Dizi/Canlı<br/>Google TV kumanda + HLS + MPEGTS</p><button tabindex="0" class="btn" style="width:240px;margin-top:14px" onclick="toggleSet()">📂 LİSTE YÜKLE</button><button tabindex="0" class="btn btnSec" style="width:240px;margin-top:8px" onclick="loadDPaste()">▶ DPASTE YÜKLE ŞİMDİ</button></div><video id="player" controls playsinline></video><div id="tvHint">📺 Kumanda: ▲▼◀▶ OK | Geri: ESC | Menü: M</div><div id="bar"><span id="now">Hazır - DPASTE</span><span id="pType" style="margin-left:auto;color:#0f0">Google TV</span></div><div id="settings"><div style="display:flex;justify-content:space-between"><b style="color:#0f0">V17 DPASTE - 7FMSCCLYX</b><button tabindex="0" onclick="toggleSet()" style="background:#ff0a16;border:none;color:#fff;padding:6px 14px;border-radius:6px">X</button></div>
-<div id="savedLists" style="margin-top:12px;max-height:150px;overflow-y:auto;background:#151d32;padding:8px;border-radius:10px;border:1px solid #1e2d4a"></div>
-<div class="tabs"><button tabindex="0" class="tab active" onclick="openTab(0)">URL</button><button tabindex="0" class="tab" onclick="openTab(1)">DOSYA</button><button tabindex="0" class="tab" onclick="openTab(2)">XTREAM</button></div>
-<div class="box active" id="b0"><textarea tabindex="0" id="urlInput" rows="3">https://dpaste.com/7FMSCCLYX.txt</textarea><button tabindex="0" class="btn" onclick="loadUrl()">URL YÜKLE</button><div id="urlLog" class="log">V17 DPASTE Hazır
-Link: dpaste.com/7FMSCCLYX.txt
-İçine gömülü - Otomatik yüklenecek
-Kategoriler:
-- CANLI: ulusal, haber, spor
-- FILM: sinetürk, film, movie
-- DIZI: dizi, yerli, yabancı
-Motorlar:
-1. HLS.js - https m3u8 (hızlı)
-2. MPEGTS.js - http:2095 TS
-3. Native - mkv/mp4
-Google TV: Yön + OK
-DB: MirtiTV_V17
-3 sekme boş</div></div>
-<div class="box" id="b1"><div tabindex="0" style="border:2px dashed #1e2d4a;padding:24px;border-radius:12px;text-align:center;color:#8aa;font-size:13px;cursor:pointer;outline:none" onclick="document.getElementById('fileInput').click()">📁 Dosya Seç</div><input type="file" id="fileInput" accept=".m3u,.m3u8,.txt" style="display:none"></div>
-<div class="box" id="b2"><input tabindex="0" id="xtServer" placeholder="http://sunucu:port"><input tabindex="0" id="xtUser" placeholder="Kullanıcı"><input tabindex="0" id="xtPass" placeholder="Şifre"><button tabindex="0" class="btn" onclick="loadXtream()">XTREAM YÜKLE</button></div>
-<div id="status" style="font-size:11px;color:#0f0;margin-top:12px;padding:12px;background:#060a14;border-radius:8px">V17 Hazır - DPASTE bekleniyor</div>
-</div></div>
-<script>
-const DPASTE_URL='https://dpaste.com/7FMSCCLYX.txt';
-const MY_PROXY='https://hidden-meadow-0d62.a-dogan.workers.dev/?url=';
-let all=[]; let hls=null; let mpegPlayer=null; let activeGroup='Tümü'; let activeCat='TUMU'; let currentList=''; const video=document.getElementById('player'); let db; let focusIndex=0; let focusArea='cat';
+</head>
+<body>
+<header><div class="logo"><img src="https://raw.githubusercontent.com/ipmirti68/-ptv-/refs/heads/main/IMG-20261025-WA5328.jpg">Mırtı TV</div><div style="display:flex;align-items:center;gap:4px"><span id="netSpeed" style="font-size:7px;background:#101c33;border:1px solid #1e2f52;padding:3px 6px;border-radius:8px;color:#7ec8ff;cursor:pointer;font-weight:700">Net: Ölçülüyor...</span><button id="setBtn" style="background:#d4b78f;color:#111;border:none;padding:5px 10px;border-radius:6px;font-weight:800;font-size:11px">AYAR</button></div></header>
+<div class="top"><button data-tab="live" class="on" id="bLive">📺 Canlı</button><button data-tab="movie" id="bMovie">🎬 Film</button><button data-tab="series" id="bSeries">🎞️ Dizi</button><button data-tab="radio" id="bRadio">📻 Radyo</button><button data-tab="fav" id="bFav">⭐ Fav</button></div>
+<div id="playerCol"><div id="player"><video id="video" controls playsinline preload="metadata" style="width:100%;height:100%;display:none"></video><audio id="audioEl" controls preload="none"></audio><div id="idle"><img id="idleImg" src="https://raw.githubusercontent.com/ipmirti68/-ptv-/refs/heads/main/IMG-20261017-WA0045.jpg"><div id="loadWrap"><div id="loadBar"><div id="loadFill"></div></div><div id="loadText">Başlıyor...</div></div><div id="radioInfo"><b id="rTitle"></b><span id="rSub">📻 Canlı Radyo</span></div></div><button id="fsBtn">⛶</button><button id="fsExit">✕</button><div id="fsHint">Dokun: liste | Sağ/Sol: kanal | Yukarı/Aşağı: ses</div><div id="volOsd"><div style="font-size:9px">Ses</div><div id="volBar"><div id="volFill" style="height:80%"></div></div><div id="volTxt" style="font-size:10px;font-weight:800">80%</div></div><div id="fsChannelList"><div class="fsHead"><b style="font-size:10px">📺 Kanal Listesi</b><div style="display:flex;gap:4px"><button id="fsPrev" style="background:#1a2a4a;color:#fff;border:none;padding:4px 8px;border-radius:6px;font-size:10px">◀ Önceki</button><button id="fsNext" style="background:#1a2a4a;color:#fff;border:none;padding:4px 8px;border-radius:6px;font-size:10px">Sonraki ▶</button><button id="fsClose" style="background:#ff3b30;color:#fff;border:none;padding:4px 8px;border-radius:6px;font-size:10px">Kapat</button></div></div><div id="fsGrid"></div></div></div><div id="epgBar"><span style="color:#7ec8ff">EPG:</span><span id="epgNow">Başlıyor...</span></div></div>
+<div id="groupsWrap"><button class="arrow" id="leftArrow">◀</button><div id="groups"></div><button class="arrow" id="rightArrow">▶</button></div>
+<div id="list"><div id="grid" class="live"></div></div>
 
-function openDB(){return new Promise(r=>{let req=indexedDB.open('MirtiTV_V17',1);req.onupgradeneeded=e=>{let d=e.target.result;if(!d.objectStoreNames.contains('lists'))d.createObjectStore('lists',{keyPath:'name'});};req.onsuccess=e=>{db=e.target.result;r(db);};});}
-async function saveToDB(n,c){if(!db) await openDB();return new Promise(r=>{let tx=db.transaction('lists','readwrite');tx.objectStore('lists').put({name:n,channels:c,count:c.length,time:Date.now()});tx.oncomplete=()=>r();});}
-async function getAllFromDB(){if(!db) await openDB();return new Promise(r=>{let tx=db.transaction('lists','readonly');let q=tx.objectStore('lists').getAll();q.onsuccess=()=>r(q.result);});}
-async function deleteFromDB(n){if(!db) await openDB();return new Promise(r=>{let tx=db.transaction('lists','readwrite');tx.objectStore('lists').delete(n);tx.oncomplete=()=>r();});}
-function toggleSet(){document.getElementById('settings').classList.toggle('open');}
-function openTab(i){document.querySelectorAll('.box').forEach((b,idx)=>b.classList.toggle('active',idx===i));document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));}
-function cleanUrl(u){return u.trim().split('|')[0].split(';')[0].replace(/\s+/g,'').replace(/&amp;/g,'&');}
+<div id="speedModal" class="hidden"><div class="speedBox">
+<b style="letter-spacing:2px;font-size:14px">SPEEDTEST</b>
+<div style="font-size:11px;color:#00a8b5">GERÇEK HIZ</div>
+<div style="width:260px;height:120px"><svg viewBox="0 0 200 120"><path d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#e5e5e5" stroke-width="12" stroke-linecap="round"/><path id="arc" d="M20 100 A80 80 0 0 1 180 100" fill="none" stroke="#00d2e0" stroke-width="12" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251"/><line id="needle" x1="100" y1="100" x2="40" y2="40" stroke="#333" stroke-width="3" stroke-linecap="round"/></svg></div>
+<div id="speedNum" class="speedVal">0.00</div>
+<div style="font-size:10px;color:#00a8b5">Mbps</div>
+<div style="display:flex;gap:16px;font-size:11px;margin-top:6px"><span>Ping <b id="pingVal">-</b></span><span>↓ <b id="downVal">-</b></span><span><b id="sizeVal">-</b></span></div>
+<div id="speedInfo" style="font-size:10px;color:#666;margin-top:8px">BAŞLAT'a bas</div>
+<div style="display:flex;gap:6px;width:100%;margin-top:10px"><button id="startTest" style="flex:1;background:#00b5c8;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:800">BAŞLAT</button><button id="closeSpeed" style="background:#eee;border:none;padding:10px 14px;border-radius:8px">Kapat</button></div>
+</div></div>
+
+<div id="modal" class="hidden"><div class="box"><b style="font-size:13px">M3U / EPG Yükle</b><input id="m3uIn" placeholder="M3U Linki (https://...m3u)"><input id="epgIn" placeholder="EPG Linki (https://...xml)"><textarea id="pasteIn" placeholder="M3U içeriğini buraya yapıştır"></textarea><input type="file" id="fileIn" accept=".m3u,.m3u8,.txt,.xml"><div style="display:flex;gap:6px"><button id="loadBtn" style="flex:1;background:#d4b78f;color:#111;border:none;padding:12px;border-radius:8px;font-weight:800">YÜKLE</button><button id="closeBtn" style="background:transparent;border:1px solid #33486f;color:#fff;padding:12px;border-radius:8px">KAPAT</button></div><div id="stat" style="font-size:10px;color:#8fb0ff;white-space:pre-wrap;max-height:120px;overflow:auto;background:#0a1222;padding:6px;border-radius:6px">Henüz liste yok</div></div></div>
+
+<script>
+var M3U_URLS=["https://raw.githubusercontent.com/ipmirti68/-p/refs/heads/main/mirti68.m3u"];
+var EPG_URL="https://raw.githubusercontent.com/ipmirti68/epg/refs/heads/main/epg.xml";
+var DEFAULT_LOGO="https://raw.githubusercontent.com/ipmirti68/-ptv-/refs/heads/main/IMG-20261025-WA5328.jpg";
+var MAIN_SCREEN="https://raw.githubusercontent.com/ipmirti68/-ptv-/refs/heads/main/IMG-20261017-WA0045.jpg";
+var RADIO_BG="https://raw.githubusercontent.com/ipmirti68/-ptv-/refs/heads/main/file_000000003b08820a96dea4b438a874d6.png";
+var SPEED_TEST_URL=MAIN_SCREEN;
+var channels=[],epg={},epgNorm={},curGroup=null,curTab="live",hls=null,hlsAudio=null,groupOrder=[],favs=[],curCh=null,isFS=false,fsListOpen=false,curVol=0.8,touchStartX=0,touchStartY=0;
+try{favs=JSON.parse(localStorage.getItem("mirti_fav")||"[]");}catch(e){favs=[];}
+
+function $(id){return document.getElementById(id);}
+function setLoad(p,t){ var f=$("loadFill"), tx=$("loadText"); if(f)f.style.width=p+"%"; if(tx)tx.textContent="%"+p+" "+t; var en=$("epgNow"); if(en)en.textContent=t; }
+function saveFav(){try{localStorage.setItem("mirti_fav",JSON.stringify(favs));}catch(e){}}
+function isFav(url){return favs.indexOf(url)!=-1;}
+function toggleFav(url){ var i=favs.indexOf(url); if(i==-1)favs.push(url); else favs.splice(i,1); saveFav(); renderGrid(); renderGroups(); renderFsGrid(); }
+function norm(s){ if(!s)return ""; var t=s+""; t=t.replace(/İ/g,"i").replace(/I/g,"i"); t=t.normalize("NFD").replace(/[\u0300-\u036f]/g,""); t=t.toLowerCase(); t=t.replace(/ı/g,"i").replace(/ş/g,"s").replace(/ğ/g,"g").replace(/ü/g,"u").replace(/ö/g,"o").replace(/ç/g,"c"); return t; }
+function cleanName(s){ if(!s)return ""; var t=norm(s); t=t.replace(/\btr\b/g,"").replace(/[^a-z0-9]/g,""); return t; }
+function getTypeByGroup(g,url,raw,tvgId,title){
+  var n=norm(g+" "+(tvgId||"")+" "+(title||""));
+  var r=(raw||"").toLowerCase();
+  if(r.indexOf('radio="true"')!=-1 || r.indexOf("radio=")!=-1){
+    if(n.indexOf("goruntulu")!=-1) return "live";
+    return "radio";
+  }
+  if(tvgId && norm(tvgId).indexOf("radyo")==0){
+    if(n.indexOf("goruntulu")!=-1) return "live";
+    return "radio";
+  }
+  if(n.indexOf("muzik")!=-1 && r.indexOf('radio="true"')==-1) return "live";
+  if(n.indexOf("music")!=-1 && r.indexOf('radio="true"')==-1) return "live";
+  if(n.indexOf("sinema")!=-1) return "live";
+  if(n.indexOf("yerli dizi")!=-1) return "series";
+  if(n.indexOf("guncel dizi")!=-1) return "series";
+  if(n.indexOf("guncel diziler")!=-1) return "series";
+  if(n.indexOf("dizi")!=-1) return "series";
+  if(n.indexOf("sezon")!=-1) return "series";
+  if(n.indexOf("bolum")!=-1) return "series";
+  if(n.indexOf("series")!=-1) return "series";
+  if(n.indexOf("film")!=-1) return "movie";
+  if(n.indexOf("movie")!=-1) return "movie";
+  if(n.indexOf("vod")!=-1) return "movie";
+  if(n.indexOf("sineturk")!=-1) return "movie";
+  if(n.indexOf("yesilcam")!=-1) return "movie";
+  if(n.indexOf("turk filmi")!=-1) return "movie";
+  if(n.indexOf("kemal+/g,'').replace(/&amp;/g,'&');}
 function log(m){document.getElementById('urlLog').textContent=m; document.getElementById('status').textContent=m.slice(0,150); console.log(m);}
 function getCat(ch){let g=(ch.group||'').toLowerCase(); let n=(ch.name||'').toLowerCase(); if(g.includes('film')||g.includes('sinetürk')||g.includes('sinema')||g.includes('movie')||g.includes('mkv')||n.includes('2023')||n.includes('2024')||n.includes('2025')||n.includes('film')) return 'FILM'; if(g.includes('dizi')||n.includes('bölüm')||n.includes('sezon')||g.includes('yerli')&&n.includes('dizi')) return 'DIZI'; return 'CANLI';}
 function setCat(cat){activeCat=cat; document.querySelectorAll('.catTab').forEach(t=>{ t.classList.toggle('active', t.dataset.cat===cat); }); activeGroup='Tümü'; buildGroups(); focusArea='group'; focusIndex=0; updateFocus();}
